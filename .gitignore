@@ -1,0 +1,19 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Local secrets and demo runtime files
+.env
+demo/.env
+demo/.venv/
+
+# Captured API tokens / scratch — never commit
+slides/canvas_jwt.txt
+slides/canvas_api_capture.json
+
+# 其他隊伍的諮詢文件 — 不公開到 public repo
+Competing_products/
+
+# 報告櫃內容（demo 執行期產物，不進版控）
+demo/reports/*
+!demo/reports/.gitkeep

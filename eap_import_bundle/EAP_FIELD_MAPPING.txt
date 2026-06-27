@@ -1,0 +1,96 @@
+EAP Data Modeling — 每個 CSV 該按什麼
+
+═══════════════════════════════════════════════════════════════════
+1) etf_metadata.csv  (16 列, 8 欄)
+═══════════════════════════════════════════════════════════════════
+Categories: ETF
+Add All (8) as Properties
+
+欄位                   Unique Key    Timestamp
+─────────────────────────────────────────────
+ticker                    ✅           —
+name                       —           —
+issuer                     —           —
+type                       —           —
+is_active                  —           —
+tracked_index              —           —
+listed_date                —           ✅
+note                       —           —
+
+
+═══════════════════════════════════════════════════════════════════
+2) holdings.csv  (96 列, 6 欄)  ⚠ 兩步：先 Stock 節點，再 HOLDS 關係
+═══════════════════════════════════════════════════════════════════
+Step A — Categories: Stock
+Add All (6) as Properties
+
+欄位              Unique Key    Timestamp
+─────────────────────────────────────────
+etf_ticker          —           —
+stock_ticker        ✅          —
+stock_name          —           —
+sector              —           —
+weight_pct          —           —
+date                —           ✅
+
+Step B — Edge / Relationship 設定 (EAP 後續步驟)
+  From (來源):   ETF.ticker        ← etf_ticker
+  To   (目標):   Stock.ticker      ← stock_ticker
+  Type (類型):   HOLDS
+  Properties:    weight_pct, date
+
+
+═══════════════════════════════════════════════════════════════════
+3) dividends.csv  (24 列, 9 欄)
+═══════════════════════════════════════════════════════════════════
+Categories: DividendEvent
+Add All (9) as Properties
+
+欄位                  Unique Key    Timestamp
+────────────────────────────────────────────
+id                       ✅           —
+etf_ticker                —           —
+ex_date                   —           ✅
+payment_date              —           —
+amount_per_unit           —           —
+currency                  —           —
+pct_股利所得              —           —
+pct_資本利得              —           —
+pct_收益平準金            —           —
+
+Edge: DividendEvent → ETF
+  From: DividendEvent.id     ← id
+  To:   ETF.ticker           ← etf_ticker
+  Type: PAID
+
+
+═══════════════════════════════════════════════════════════════════
+4) regulatory_events.csv  (1 列, 6 欄)
+═══════════════════════════════════════════════════════════════════
+Categories: RegulatoryEvent
+Add All (6) as Properties
+
+欄位            Unique Key    Timestamp
+──────────────────────────────────────
+id                ✅            —
+date               —            ✅
+title              —            —
+impact_type        —            —
+summary            —            —
+url                —            —
+
+(這個沒有 edge 要建，1 列獨立節點)
+
+
+═══════════════════════════════════════════════════════════════════
+灌完之後 graph 結構：
+═══════════════════════════════════════════════════════════════════
+
+  (:RegulatoryEvent)─AFFECTS─► (:ETF) ─HOLDS{weight,date}─► (:Stock)
+                                  ▲
+                                  │ PAID
+                                  │
+                          (:DividendEvent)
+
+Hero query「31.1%」走的就是 (:ETF)-[HOLDS]->(:Stock {ticker:'2330'}) 這條邊，
+所以 holdings.csv 的 HOLDS 邊一定要建好，沒建 Q-Demo-C 主秀就會錯。

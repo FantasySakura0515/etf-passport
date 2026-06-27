@@ -1,0 +1,24 @@
+EAP Vector RAG 要灌的 PDF — 自己去 MOPS 下載，丟進這個資料夾，再上傳 EAP
+
+MOPS ETF 公開說明書查詢頁：https://mops.twse.com.tw/mops/web/t57sb01_q7
+
+⭐ 必備 4 份（決賽 Q-Demo-C 主秀用）：
+  - 0050 元大台灣50 公開說明書       → 0050_prospectus.pdf
+  - 006208 富邦台50 公開說明書        → 006208_prospectus.pdf
+  - 00878 國泰永續高股息 公開說明書    → 00878_prospectus.pdf
+  - 00992A 主動富邦台灣動能 公開說明書 → 00992A_prospectus.pdf
+
+加分 3 份（提升 Q-Demo-B 答題品質）：
+  - 00992A 2026 年 4 月月報           → 00992A_monthly_2026-04.pdf
+  - 00919 2026 Q2 除息公告            → 00919_dividend_2026Q2.pdf
+  - FTSE TWSE Taiwan 50 編製規則      → ftse_twse_50_methodology.pdf
+
+可選（決賽用，多多益善）：
+  - 0056、00919、00929、00940 公開說明書（各檔對應檔名同上）
+  - 金管會 2026/4/24「主動式 ETF 25%」新令公告 → fsc_2026-04-24_25pct.pdf
+
+上傳到 EAP 時，每份在 metadata 欄位填：
+  etf       = 對應代號（如 0050）
+  doc_type  = prospectus / monthly / press_release / index_methodology
+  language  = zh-TW
+  asof_date = 2026-06-05

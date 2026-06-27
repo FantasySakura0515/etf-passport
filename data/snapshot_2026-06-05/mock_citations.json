@@ -1,0 +1,33 @@
+{
+  "_comment": "hero query 的引用回鏈資料庫，提供給 mock_responses.js 使用。持股為真實資料 as-of 2026-06-05。",
+  "Q-Demo-B": {
+    "label": "收益平準金白話解釋",
+    "citations": [
+      {
+        "type": "vector",
+        "text": "國泰永續高股息 00878 收益分配公告（112/10/31）§預估收益分配組成占比 — 收益平準金占比 5.71%（vector_pdfs/00878_dividend_112Q4.pdf）",
+        "url": null
+      },
+      {
+        "type": "regulatory",
+        "text": "證期局 2023/11/01 ETF 配息申報新制",
+        "url": "https://www.twse.com.tw/market_insights/zh/detail/ff8080818bf08529018bf6c5d9550014"
+      }
+    ]
+  },
+  "Q-Demo-C": {
+    "label": "跨多檔組合台積電穿透曝險",
+    "citations": [
+      {
+        "type": "graph",
+        "text": "穿透計算：4 檔 ETF × 持股權重跨多檔加權求和；holdings_2026-06-05.csv（真實成分股 as-of 2026-06-05，來源 etfinfo.tw，經元大投信官網交叉驗證）",
+        "url": null
+      },
+      {
+        "type": "vector",
+        "text": "0050 / 006208 同追 FTSE TWSE Taiwan 50 指數（公開資訊，市值加權；兩檔台積電權重皆近 58%）",
+        "url": null
+      }
+    ]
+  }
+}

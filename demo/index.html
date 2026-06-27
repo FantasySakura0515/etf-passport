@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ETF 透視鏡 PASSPORT</title>
+  <!-- 本地依賴：執行過 `bash fetch_vendor.sh` 後可離線運作（決賽備援） -->
+  <script src="vendor/marked.min.js"></script>
+  <script src="vendor/dompurify.min.js"></script>
+  <script src="vendor/mermaid.min.js"></script>
+  <script>
+    // mermaid UMD 自動將 mermaid 掛到 window；base theme 調成與紙張同調的暖色
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'loose',
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#f7f0dd',
+        primaryBorderColor: '#b3a36f',
+        primaryTextColor: '#2c261a',
+        lineColor: '#6b614a',
+        edgeLabelBackground: '#f3ecd9',
+        fontFamily: '"PingFang TC", "Noto Sans TC", sans-serif',
+      },
+    });
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top bar：護照查驗櫃檯 -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="stamp" aria-hidden="true">ETF</div>
+      <div class="brand-text">
+        <h1>ETF 透視鏡<em>PASSPORT</em></h1>
+        <p class="slogan">將冷冰冰的資料，轉化為有溫度的決策</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Left：護照封面（持股 = 你的投資身分） -->
+    <aside class="panel passport">
+      <div class="passport-frame">
+        <div class="passport-head">
+          <h2>投資護照</h2>
+          <span class="passport-sub">PASSPORT・持股組合</span>
+        </div>
+
+        <p class="hint">點 Persona 一鍵載入示範組合</p>
+        <div class="persona-list">
+          <button class="persona-btn" data-persona="dividend">
+            <span class="p-name">小資高股息</span>
+            <span class="p-desc">0056・00878・00919・00940</span>
+          </button>
+          <button class="persona-btn" data-persona="market">
+            <span class="p-name">市值派</span>
+            <span class="p-desc">0050・006208</span>
+          </button>
+          <button class="persona-btn is-hero" data-persona="theme">
+            <span class="p-name">主題追熱<i>★ 主秀</i></span>
+            <span class="p-desc">0050・006208・00878・00992A</span>
+          </button>
+        </div>
+
+        <div class="visa-page">
+          <div class="holdings-head">
+            <h3>持股明細</h3>
+            <button id="add-holding">＋ 加入</button>
+          </div>
+          <div id="holdings-list"></div>
+        </div>
+
+        <div class="report-tools">
+          <div class="holdings-head"><h3>報告</h3></div>
+          <button id="gen-portfolio-report" class="report-btn primary">📋 產出組合健檢報告</button>
+          <div class="etf-report-row">
+            <select id="etf-report-select"></select>
+            <button id="gen-etf-report" class="report-btn">單檔透視</button>
+          </div>
+        </div>
+
+        <div class="provenance">
+          <p>持股為<b>真實成分股</b>，as-of 2026/06/05（etfinfo.tw，經元大投信官網交叉驗證）</p>
+          <p>16 檔覆蓋（12 散戶熱門 + 4 主動對照）</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Center：查驗對話（報告頁） -->
+    <section class="panel chat">
+      <div class="chat-head">
+        <div class="panel-head">
+          <h2>穿透查驗</h2>
+          <span class="panel-sub">HYBRID RAG</span>
+        </div>
+        <div class="hero-row">
+          <button class="hero-q hero-c" data-q="C">★ Q-C 穿透</button>
+          <button class="hero-q route-graph" data-q="A">Q-A 排名</button>
+          <button class="hero-q route-graph" data-q="D">Q-D 名實</button>
+          <button class="hero-q route-graph" data-q="E">Q-E 漂綠</button>
+          <button class="hero-q route-graph" data-q="F">Q-F 選產業</button>
+          <button class="hero-q route-vector" data-q="B">Q-B 平準金</button>
+        </div>
+      </div>
+      <div id="messages"></div>
+      <form id="ask-form">
+        <input id="ask-input" autocomplete="off"
+               placeholder="問任何關於你 ETF 組合的問題…（按 Enter）" />
+        <button type="submit">查驗</button>
+      </form>
+    </section>
+
+    <!-- Right：查驗章（引用回鏈）＋ 報告櫃 -->
+    <aside class="panel side">
+      <div class="side-tabs">
+        <button class="side-tab active" data-tab="citations-pane">引用回鏈</button>
+        <button class="side-tab" data-tab="shelf-pane">報告櫃</button>
+      </div>
+      <div id="citations-pane">
+        <div class="panel-head">
+          <h2>引用回鏈</h2>
+          <span class="panel-sub">EVIDENCE</span>
+        </div>
+        <div id="citations">
+          <p class="empty-hint">送出問題後，每則回答的證據來源會蓋章在這裡。</p>
+        </div>
+      </div>
+      <div id="shelf-pane" class="hidden">
+        <div class="panel-head">
+          <h2>報告櫃</h2>
+          <span class="panel-sub">REPORTS</span>
+        </div>
+        <div id="report-shelf"><p class="empty-hint">尚無已儲存的報告。</p></div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 報告預覽 modal -->
+  <div id="report-modal" class="report-modal hidden">
+    <div class="report-modal-box">
+      <div id="report-body" class="report-body"></div>
+      <div class="report-actions">
+        <button id="report-save">💾 儲存到報告櫃</button>
+        <button id="report-download">⬇️ 下載 HTML</button>
+        <button id="report-print">🖨 列印 / PDF</button>
+        <button id="report-discard" class="ghost">捨棄</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="mock_responses.js"></script>
+  <script src="app.js"></script>
+  <script src="report_ui.js"></script>
+</body>
+</html>

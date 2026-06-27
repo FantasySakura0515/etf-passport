@@ -1,0 +1,33 @@
+{
+  "_comment": "三 Persona 對應的示範組合。Q-Demo-C 主秀使用 'theme'。",
+  "personas": {
+    "dividend": {
+      "label": "小資高股息族",
+      "description": "三檔以上高股息 ETF 都是熱門配置；痛點是「自以為分散，其實重複度高」",
+      "holdings": [
+        { "ticker": "0056",  "amount": 100000 },
+        { "ticker": "00878", "amount": 100000 },
+        { "ticker": "00919", "amount": 100000 },
+        { "ticker": "00940", "amount": 100000 }
+      ]
+    },
+    "market": {
+      "label": "市值派",
+      "description": "0050 / 006208 雙王並進；痛點是「兩檔都追同指數真的等價嗎？費用、追蹤誤差差很多」",
+      "holdings": [
+        { "ticker": "0050",   "amount": 200000 },
+        { "ticker": "006208", "amount": 200000 }
+      ]
+    },
+    "theme": {
+      "label": "市值高股息混合派（Q-Demo-C 主秀）",
+      "description": "市值 + 高股息 + 主動式都買，自以為涵蓋所有風格 — Hero 揭曉：仍有 31.1% 在台積電",
+      "holdings": [
+        { "ticker": "0050",   "amount": 100000 },
+        { "ticker": "006208", "amount": 100000 },
+        { "ticker": "00878",  "amount": 100000 },
+        { "ticker": "00992A", "amount": 100000 }
+      ]
+    }
+  }
+}
